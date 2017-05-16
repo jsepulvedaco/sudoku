@@ -8,18 +8,24 @@ bool verificarElementosArray(int numero, int siguiente, int array[9])
 	if (numero > 7) return false;
 
 	int i = siguiente;
+	cout <<"\n\t verificarElementosArray"<<endl;
+
+	cout <<"numero: "<<numero<<endl;
+	cout <<"siguiente: "<<siguiente<<endl;
+	
 	while (numero <= 7 && i <= 8)
 	{
-		if ( (array[numero] == 0 || array[i] == 0) || (array[numero] == array[i]) )  
+		cout <<"i: "<<i<<endl;
+		cout <<"A[numero]: A["<<numero<<"]: "<<array[numero]<<endl;
+		cout <<"A[i]: A["<<i<<"]: "<<array[i]<<endl;
+		if ( /*(array[numero] == 0 || array[i] == 0) ||*/ (array[numero] == array[i]) )  
 		{
 			return true;
-			break;
 		}
-
 		i++;
 	}
 
-	return verificarElementosArray(numero +1, siguiente +1, array[9]);
+	return verificarElementosArray(numero +1, siguiente +1, array);
 }
 
 bool verificarColumnas(int tablero[9][9])
@@ -33,7 +39,7 @@ bool verificarColumnas(int tablero[9][9])
 			arr[j] = tablero[j][i];
 		}
 
-		return verificarElementosArray(0, 1, arr[9]);
+		return verificarElementosArray(0, 1, arr);
 
 	}
 }
@@ -47,16 +53,16 @@ bool verificarCuadrantes (int tablero[3][3])
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			indice = matriz[i][j] -1;
-			arrayMatriz[indice] = matriz[i][j];
+			indice = tablero[i][j] - 1;
+			arrayMatriz[indice] = tablero[i][j];
 		}
 	}
 
-	return verificarElementosArray(0, 1, arrayMatriz[9]);
+	return verificarElementosArray(0, 1, arrayMatriz);
 }
 
 
-void obtenerCuadrantes (tablero[9][9]) // esta función debe devolver una matriz de 3x3
+void obtenerCuadrantes (int tablero[9][9]) // esta función debe devolver una matriz de 3x3
 {
 	int  columna = 0;
 	int limiteColumna = 3;
@@ -68,7 +74,7 @@ void obtenerCuadrantes (tablero[9][9]) // esta función debe devolver una matriz
 
 	int subMatriz[3][3];
 
-	int i = 0
+	int i = 0;
 	while (i < 9)
 	{
 		for (fila; fila < limiteFila; fila++)
@@ -79,10 +85,10 @@ void obtenerCuadrantes (tablero[9][9]) // esta función debe devolver una matriz
 			}
 		}
 
-		verificarCuadrantes(subMatriz[3][3]);
+		verificarCuadrantes(subMatriz);
 	}
 
-	cambioLimitesFila = limiteFila
+	cambioLimitesFila = limiteFila;
 	fila = cambioLimitesFila;
 	limiteFila += 3;
 
@@ -100,7 +106,14 @@ void obtenerCuadrantes (tablero[9][9]) // esta función debe devolver una matriz
 
 }
 
+void imprimirArray(int a[]){
 
+		for (int j = 0; j < 9; j++)
+		{
+			cout << a[j] << " ";
+		}
+		cout <<endl;
+}
 
 int main ()
 {
@@ -132,8 +145,13 @@ int main ()
 
 	int arr[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	
+	
+	imprimirArray(arr);
+	
+	bool respuesta = verificarElementosArray(0, 1, arr);
+	cout <<" -> "<<respuesta<<endl;
 
-	if (verificarElementosArray(0, 1, arr[])) cout << "hay elementos repeditos\n";
+	if (respuesta) cout << " hay elementos repeditos\n";
 	else cout << "no hay elementos repetidos\n";
 	
 	return 0;
