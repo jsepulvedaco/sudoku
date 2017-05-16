@@ -18,7 +18,7 @@ bool verificarElementosArray(int numero, int siguiente, int array[9])
 		cout <<"i: "<<i<<endl;
 		cout <<"A[numero]: A["<<numero<<"]: "<<array[numero]<<endl;
 		cout <<"A[i]: A["<<i<<"]: "<<array[i]<<endl;
-		if ( /*(array[numero] == 0 || array[i] == 0) ||*/ (array[numero] == array[i]) )  
+		if ( (array[numero] == 0 || array[i] == 0) || (array[numero] == array[i]) )  
 		{
 			return true;
 		}
@@ -143,16 +143,16 @@ int main ()
 
 	cout << "\n\n";
 
-	int arr[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int arr[] = {88, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	
 	
 	imprimirArray(arr);
 	
 	bool respuesta = verificarElementosArray(0, 1, arr);
-	cout <<" -> "<<respuesta<<endl;
 
-	if (respuesta) cout << " hay elementos repeditos\n";
-	else cout << "no hay elementos repetidos\n";
+
+	if (respuesta) cout << " El juego NO ha terminado\n";
+	else cout << "El juego ya termino\n";
 	
 	return 0;
 }
