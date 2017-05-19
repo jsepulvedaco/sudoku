@@ -2,34 +2,53 @@
 
 using namespace std;
 
-// devuelve true si hay elementos iguales o si hay algún cero
-bool verificarElementosArray(int numero, int siguiente, int array[9])
+// 
+bool verificarElementos(int numero, int siguiente, int array[9])
 {	
+	/* devuelve true si hay elementos iguales */
+
 	if (numero > 7) return false;
 
 	int i = siguiente;
-	cout <<"\n\t verificarElementosArray"<<endl;
-
-	cout <<"numero: "<<numero<<endl;
-	cout <<"siguiente: "<<siguiente<<endl;
 	
 	while (numero <= 7 && i <= 8)
 	{
-		cout <<"i: "<<i<<endl;
-		cout <<"A[numero]: A["<<numero<<"]: "<<array[numero]<<endl;
-		cout <<"A[i]: A["<<i<<"]: "<<array[i]<<endl;
-		if ( (array[numero] == 0 || array[i] == 0) || (array[numero] == array[i]) )  
+		if (array[numero] == array[i])  
 		{
 			return true;
 		}
 		i++;
 	}
 
-	return verificarElementosArray(numero +1, siguiente +1, array);
+	return verificarElementos(numero +1, siguiente +1, array);
+}
+
+int * convertirMatriz (int matriz[3][3])
+{
+	/* recibe la matriz de los cuadrantes y retorna un vector
+	   de 9 componentes a partir de esta, para luego verificar sus elementos
+	   con otros métodos
+	 */
+	int indice = 0;
+	int * vector = new int[9];
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			vector[indice] = matriz[i][j];
+			indice++;
+		}
+
+		if (indice > 9) break;
+	}
+	
+	return vector;
 }
 
 bool verificarColumnas(int tablero[9][9])
 {
+	// retorna true si hay elementos iguales en alguan columna
 	int arr[9];
 
 	for(int i = 0; i < 9; i++)
@@ -39,81 +58,61 @@ bool verificarColumnas(int tablero[9][9])
 			arr[j] = tablero[j][i];
 		}
 
-		return verificarElementosArray(0, 1, arr);
+		return verificarElementos(0, 1, arr);
 
 	}
 }
 
-bool verificarCuadrantes (int tablero[3][3])
+bool verificarCuadrantes (int matriz[9][9])
 {
-	int indice;
-	int arrayMatriz[9];
+	/* crea un vector de 9 componentes a partir de cada uno de los cuadrantes
+	   del tablero de sudoku para luego verificar con alguna función sus elementos.
+	   retorna true si hay algún elemento repetido en cada cuadrante.
+	*/
+	int inicioColumna = 0;
+	int finColumna = 3;
 
-	for (int i = 0; i < 3; i++)
+	int * array = new int[9];
+	int submatriz[3][3];
+
+	for (int veces = 0; veces < 3; veces++)
 	{
-		for (int j = 0; j < 3; j++)
+		/* itera tres veces sobre tres columnas, luego sobre otras tres, y finalmente sobre las últimas 3.
+		 mientras tanto, se van obteniendo tres elementos por cada fila */
+		int i;
+		int inicioFila = 0;
+		int finFila = 3;
+		int columna;
+
+		for (columna = 0; columna < 3; columna++)
 		{
-			indice = tablero[i][j] - 1;
-			arrayMatriz[indice] = tablero[i][j];
-		}
-	}
-
-	return verificarElementosArray(0, 1, arrayMatriz);
-}
-
-
-void obtenerCuadrantes (int tablero[9][9]) // esta función debe devolver una matriz de 3x3
-{
-	int  columna = 0;
-	int limiteColumna = 3;
-	int cambioLimitesColumna;
-
-	int fila = 0;
-	int limiteFila = 3;
-	int cambioLimitesFila;
-
-	int subMatriz[3][3];
-
-	int i = 0;
-	while (i < 9)
-	{
-		for (fila; fila < limiteFila; fila++)
-		{
-			for (columna; columna < limiteColumna; columna++)
+			/* se toman los primeros 3 elementos por iteración de todas las filas  por cada 3 columnas */
+			for (i = inicioFila; i < finFila; i++) // inicio y fin de fila van a ir aumentando de 3 en 3
 			{
-				subMatriz[fila][columna] = tablero[fila][columna];
+				for (int j = inicioColumna; j < finColumna; j++)
+				{
+					submatriz[i - inicioFila][j - inicioColumna] = matriz[i][j];
+				}
+							
 			}
+
+			array = convertirMatriz(submatriz);
+			if (verificarElementos(0, 1, array)) return true;
+
+			inicioFila += 3;
+			finFila += 3;
+
+			if (finFila > 9) break;
 		}
 
-		verificarCuadrantes(subMatriz);
+		inicioColumna += 3;
+		finColumna += 3;
 	}
 
-	cambioLimitesFila = limiteFila;
-	fila = cambioLimitesFila;
-	limiteFila += 3;
-
-	if (limiteFila > 9)
-	{
-		limiteFila = 3;
-		fila = 0;
-		
-		cambioLimitesColumna = limiteColumna;
-		columna = cambioLimitesColumna;
-		limiteColumna += 3;
-	}
-
-	i++;
+	return false;
 
 }
 
-void imprimirArray(int a[]){
-
-		for (int j = 0; j < 9; j++)
-		{
-			cout << a[j] << " ";
-		}
-		cout <<endl;
-}
 
 int main ()
 {
@@ -123,36 +122,16 @@ int main ()
 		{20, 21, 22, 23, 24, 25, 26, 27, 28},
 		{30, 31, 32, 33, 34, 35, 36, 37, 38},
 		{40, 41, 42, 43, 44, 45, 46, 47, 48},
-		{50, 51, 52, 53, 54, 55, 56, 57, 58},
+		{50, 00, 52, 53, 54, 05, 56, 57, 58},
 		{60, 61, 62, 63, 64, 65, 66, 67, 68},
 		{70, 71, 72, 73, 74, 75, 76, 77, 78},
-		{80, 81, 82, 83, 84, 85, 86, 87, 88}
+		{80, 81, 82, 83, 84, 85, 86, 87, 87}
 	};
 
-	
+
+	if (verificarCuadrantes(matriz)) cout << "hay elementos repetidos"<< endl;
+	else cout << "no hay elementos repetidos" << endl;
 
 
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			cout << matriz[i][j] << " ";
-		}
-		cout << endl;
-	}
-
-	cout << "\n\n";
-
-	int arr[] = {88, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	
-	
-	imprimirArray(arr);
-	
-	bool respuesta = verificarElementosArray(0, 1, arr);
-
-
-	if (respuesta) cout << " El juego NO ha terminado\n";
-	else cout << "El juego ya termino\n";
-	
 	return 0;
 }
