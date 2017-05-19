@@ -93,7 +93,6 @@ bool verificarCuadrantes (int matriz[9][9])
 				{
 					submatriz[i - inicioFila][j - inicioColumna] = matriz[i][j];
 				}
-							
 			}
 
 			array = convertirMatriz(submatriz);
