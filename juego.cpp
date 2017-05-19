@@ -42,7 +42,8 @@ int main ()
 		{0,3,5,0,0,2,0,6,9}
 	};
 
-	bool contunuarJuego = verificarCuadrantes(sudoku) && verificarColumnas(sudoku) && verificarFilas(sudoku); 
+	bool continuarJuego = true;
+	
 
 	/* inicializamos la variable para las teclas del movimiento
 	 * y para los números del 0 - 9 que se ingresen en el tablero
@@ -51,7 +52,7 @@ int main ()
 	char opcion = 'x'; // solo se eligió inicializar «opcion» con 'x' arbitrariamente
 	int posx = 0, posy = 0;
 
-	while (opcion != 'P' && opcion != 'p' && contunuarJuego)
+	while (opcion != 'P' && opcion != 'p' && continuarJuego)
 	{
 		/* aquí hay que seleccionar (comentar o descomentar alguna de las dos siguientes líneas)
 		 * dependiendo del sistema operativo.
@@ -105,9 +106,10 @@ int main ()
 				cout << "Juego Terminado\n";
 				break;
 		}
+		continuarJuego = verificarCuadrantes(sudoku) && verificarColumnas(sudoku) && verificarFilas(sudoku); 
 	}
 
-	if (contunuarJuego == false) cout << "¡GANASTE!" << endl;
+	if (continuarJuego == false) cout << "¡GANASTE!" << endl;
 
 	return 0;
 }
